@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Malla Curricular - Estomatología</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f7fa;
+      margin: 0;
+      padding: 20px;
+    }
+    h2 {
+      background: #3e8e9c;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    .ciclo {
+      margin-bottom: 30px;
+    }
+    .materia {
+      display: flex;
+      align-items: center;
+      background: #ffffff;
+      border-radius: 8px;
+      margin: 6px 0;
+      padding: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .materia:hover {
+      background: #eaf4f6;
+    }
+    .materia.bloqueada {
+      background: #e3e3e3;
+      cursor: not-allowed;
+      position: relative;
+    }
+    .materia.bloqueada::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      background: #444;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      top: 100%;
+      left: 0;
+      white-space: nowrap;
+      display: none;
+    }
+    .materia.bloqueada:hover::after {
+      display: block;
+    }
+    .materia.aprobada {
+      background: #b9fbc0;
+      text-decoration: line-through;
+    }
+    .codigo {
+      font-weight: bold;
+      width: 180px;
+    }
+    .info {
+      flex-grow: 1;
+    }
+    .tipo, .modalidad {
+      font-size: 0.9em;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>Malla Curricular Interactiva - Estomatología</h1>
+  <div id="malla"></div>
+
+  <script>
+    const malla = document.getElementById('malla');
+    const progreso = JSON.parse(localStorage.getItem('progresoEstoma') || '{}');
+
+    const datos = [
+      // PRIMER Y SEGUNDO CICLO CONSERVADOS...
+      // A continuación se añaden los ciclos 3º al 10º con dependencias simples:
+      {
+        ciclo: 'TERCER CICLO',
+        materias: [
+          { id: 'E2822', nombre: 'BIOQUÍMICA GENERAL Y ORAL', codigo: 'E2822', tipo: 'Específico', modalidad: 'Semipresencial', prerequisitos: ['E0200'] },
+          { id: 'E0236', nombre: 'MORFOLOGÍA Y FUNCIÓN DEL CUERPO HUMANO', codigo: 'E0236', tipo: 'Específico', modalidad: 'Semipresencial', prerequisitos: ['E3145'] },
+          { id: 'E0368', nombre: 'FUNCIÓN SISTEMA ESTOMATOGNÁTICO I', codigo: 'E0368', tipo: 'Específico', modalidad: 'Semipresencial' },
+          { id: 'E0158', nombre: 'FUNCIÓN SISTEMA ESTOMATOGNÁTICO II', codigo: 'E0158', tipo: 'Específico', modalidad: 'Presencial', prerequisitos: ['E0368'] },
+          { id: 'E0389', nombre: 'INGLÉS 1', codigo: 'E0389/G0031', tipo: 'General', modalidad: 'Presencial' },
+          { id: 'E0252', nombre: 'ACTIVIDAD COMPLEMENTARIA II', codigo: 'E0252', tipo: 'General', modalidad: 'Presencial' },
+          { id: 'E2942', nombre: 'ASIGNATURA ELECTIVA II', codigo: 'E2942', tipo: 'General', modalidad: 'Presencial' }
+        ]
+      },
+      {
+        ciclo: 'CUARTO CICLO',
+        materias: [
+          { id: 'E0077', nombre: 'MICROBIOLOGÍA GENERAL Y ESTOMATOLÓGICA', codigo: 'E0077', tipo: 'Específico', modalidad: 'Semipresencial', prerequisitos: ['E2822'] },
+          { id: 'E0369', nombre: 'FARMACOLOGÍA APLICADA', codigo: 'E0369', tipo: 'Específico', modalidad: 'Semipresencial', prerequisitos: ['E2822'] },
+          { id: 'E0096', nombre: 'SEMIOLOGÍA GENERAL Y BUCAL', codigo: 'E0096', tipo: 'Específico', modalidad: 'Semipresencial' },
+          { id: 'E0232', nombre: 'CIRUGÍA BUCAL I', codigo: 'E0232', tipo: 'Específico', modalidad: 'Semipresencial' },
+          { id: 'E0228', nombre: 'PRINCIPIOS DE IMAGENOLOGÍA', codigo: 'E0228', tipo: 'Específico', modalidad: 'Semipresencial' },
+          { id: 'E0082', nombre: 'ODONTOLOGÍA SOCIAL I', codigo: 'E0082', tipo: 'Específico', modalidad: 'Semipresencial' },
+          { id: 'E0233', nombre: 'DIAGNÓSTICO ENFERMEDADES BUCALES', codigo: 'E0233', tipo: 'Específico', modalidad: 'Semipresencial' },
+          { id: 'E0370', nombre: 'BIOESTADÍSTICA', codigo: 'E0370', tipo: 'General', modalidad: 'No Presencial' },
+          { id: 'E0390', nombre: 'INGLÉS 2', codigo: 'E0390/G0032', tipo: 'General', modalidad: 'Presencial', prerequisitos: ['E0389'] },
+          { id: 'E2943', nombre: 'ASIGNATURA ELECTIVA III', codigo: 'E2943', tipo: 'Específico', modalidad: 'Presencial' },
+          { id: 'E0253', nombre: 'ACTIVIDAD COMPLEMENTARIA III', codigo: 'E0253', tipo: 'General', modalidad: 'Presencial' }
+        ]
+      },
+      {
+        ciclo: 'QUINTO CICLO',
+        materias: [
+          { id: 'E0393', nombre: 'CLÍNICA ADULTO I', codigo: 'E0393', tipo: 'De Especialidad', modalidad: 'Presencial' },
+          { id: 'E0394', nombre: 'TRASTORNOS FUNCIONALES OCLUSALES', codigo: 'E0394', tipo: 'De Especialidad', modalidad: 'No Presencial' },
+          { id: 'E0162', nombre: 'PERIODONCIA I', codigo: 'E0162', tipo: 'De Especialidad', modalidad: 'No Presencial' },
+          { id: 'E0395', nombre: 'RESTAURADORA I', codigo: 'E0395', tipo: 'De Especialidad', modalidad: 'No Presencial' },
+          { id: 'E0142', nombre: 'ENDODONCIA I', codigo: 'E0142', tipo: 'De Especialidad', modalidad: 'Presencial' },
+          { id: 'E0023', nombre: 'PEDIÁTRICA I', codigo: 'E0023', tipo: 'De Especialidad', modalidad: 'Presencial' },
+          { id: 'E0371', nombre: 'PATOLOGÍA GENERAL Y BUCAL', codigo: 'E0371', tipo: 'Específico', modalidad: 'Semipresencial' },
+          { id: 'E0083', nombre: 'ODONTOLOGÍA SOCIAL II', codigo: 'E0083', tipo: 'Específico', modalidad: 'Presencial', prerequisitos: ['E0082'] },
+          { id: 'E0396', nombre: 'INVESTIGACIÓN I', codigo: 'E0396', tipo: 'Específico', modalidad: 'No Presencial' },
+          { id: 'E0391', nombre: 'INGLÉS 3', codigo: 'E0391/G0033', tipo: 'General', modalidad: 'Presencial', prerequisitos: ['E0390'] },
+          { id: 'E0254', nombre: 'ACTIVIDAD COMPLEMENTARIA IV', codigo: 'E0254', tipo: 'General', modalidad: 'Presencial' }
+        ]
+      },
+      {
+        ciclo: 'SEXTO A DÉCIMO CICLO',
+        materias: [
+          { id: 'E0408', nombre: 'INTERNADO CLÍNICO ADULTO', codigo: 'E0408', tipo: 'De Especialidad', modalidad: 'Semipresencial' },
+          { id: 'E0411', nombre: 'INTERNADO SALUD PÚBLICA', codigo: 'E0411', tipo: 'Específico', modalidad: 'Semipresencial' },
+          { id: 'E0410', nombre: 'INTERNADO HOSPITALARIO Y EXTERNADO', codigo: 'E0410', tipo: 'Específico', modalidad: 'Semipresencial' }
+        ]
+      }
+    ];
+
+    function tieneRequisitos(materia) {
+      if (!materia.prerequisitos) return true;
+      return materia.prerequisitos.every(id => progreso[id]);
+    }
+
+    function renderMalla() {
+      malla.innerHTML = '';
+      datos.forEach(ciclo => {
+        const divCiclo = document.createElement('div');
+        divCiclo.className = 'ciclo';
+
+        const titulo = document.createElement('h2');
+        titulo.textContent = ciclo.ciclo;
+        divCiclo.appendChild(titulo);
+
+        ciclo.materias.forEach(mat => {
+          const divMateria = document.createElement('div');
+          divMateria.className = 'materia';
+          divMateria.id = mat.id;
+
+          const aprobada = progreso[mat.id];
+          const habilitada = tieneRequisitos(mat);
+
+          if (aprobada) divMateria.classList.add('aprobada');
+          if (!habilitada) {
+            divMateria.classList.add('bloqueada');
+            const faltan = mat.prerequisitos.filter(id => !progreso[id]).join(', ');
+            divMateria.setAttribute('data-tooltip', `Falta aprobar: ${faltan}`);
+          }
+
+          const cod = document.createElement('div');
+          cod.className = 'codigo';
+          cod.textContent = mat.codigo;
+
+          const info = document.createElement('div');
+          info.className = 'info';
+          info.innerHTML = `<strong>${mat.nombre}</strong><br><span class="tipo">${mat.tipo}</span> | <span class="modalidad">${mat.modalidad}</span>`;
+
+          divMateria.appendChild(cod);
+          divMateria.appendChild(info);
+
+          if (!aprobada && habilitada) {
+            divMateria.addEventListener('click', () => toggleAprobacion(mat.id));
+          }
+
+          divCiclo.appendChild(divMateria);
+        });
+
+        malla.appendChild(divCiclo);
+      });
+    }
+
+    function toggleAprobacion(id) {
+      progreso[id] = !progreso[id];
+      localStorage.setItem('progresoEstoma', JSON.stringify(progreso));
+      renderMalla();
+    }
+
+    renderMalla();
+  </script>
+</body>
+</html>
+
