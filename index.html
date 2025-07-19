@@ -10,6 +10,10 @@
       margin: 0;
       padding: 20px;
     }
+    h1 {
+      color: #d81b60;
+      text-align: center;
+    }
     .grid {
       display: grid;
       grid-template-columns: repeat(10, 1fr);
@@ -18,7 +22,7 @@
     }
     .cycle-title {
       grid-column: span 10;
-      background-color: #1e2a56;
+      background-color: #f48fb1;
       color: white;
       font-size: 1.2em;
       padding: 10px;
@@ -34,7 +38,7 @@
       position: relative;
     }
     .subject.approved {
-      background-color: #c9f7c9;
+      background-color: #f8bbd0;
     }
     .subject.locked {
       background-color: #f2f2f2;
@@ -62,12 +66,31 @@
     .subject.locked:hover .tooltip {
       display: block;
     }
+    .cycle-message {
+      grid-column: span 10;
+      color: #e91e63;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    button {
+      background-color: #f48fb1;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    button:hover {
+      background-color: #ec407a;
+    }
     footer {
       text-align: center;
       font-weight: bold;
       margin-top: 20px;
-      background-color: #ff6600;
-      color: white;
+      background-color: #f8bbd0;
+      color: #880e4f;
       padding: 10px;
       border-radius: 8px;
     }
@@ -76,12 +99,12 @@
 <body>
   <h1>Malla Curricular - Estomatología</h1>
   <div id="app"></div>
-  <footer>Progreso guardado automáticamente</footer>
+  <footer>Sigue con fuerza mi princesa Doctora. Con amor Fabricio</footer>
 
   <script>
     const data = [
       {
-        ciclo: 'PRIMER CICLO',
+        ciclo: 'Primer Ciclo',
         cursos: [
           { nombre: 'Matemáticas Básicas', modalidad: 'Presencial' },
           { nombre: 'Elementos de Química', modalidad: 'Presencial' },
@@ -93,7 +116,7 @@
         ]
       },
       {
-        ciclo: 'SEGUNDO CICLO',
+        ciclo: 'Segundo Ciclo',
         cursos: [
           { nombre: 'Física Básica', modalidad: 'Presencial' },
           { nombre: 'Fundamentos Básicos de la Práctica Estomatológica', modalidad: 'Presencial' },
@@ -105,7 +128,7 @@
         ]
       },
       {
-        ciclo: 'TERCER CICLO',
+        ciclo: 'Tercer Ciclo',
         cursos: [
           { nombre: 'Bioquímica General y Oral', modalidad: 'Semipresencial' },
           { nombre: 'Morfología, Estructura y Función del Cuerpo Humano', modalidad: 'Semipresencial' },
@@ -117,7 +140,7 @@
         ]
       },
       {
-        ciclo: 'CUARTO CICLO',
+        ciclo: 'Cuarto Ciclo',
         cursos: [
           { nombre: 'Microbiología General y Estomatológica', modalidad: 'Semipresencial' },
           { nombre: 'Farmacología Aplicada a la Estomatología', modalidad: 'Semipresencial' },
@@ -133,7 +156,7 @@
         ]
       },
       {
-        ciclo: 'QUINTO CICLO',
+        ciclo: 'Quinto Ciclo',
         cursos: [
           { nombre: 'Clínica Integral para el Adulto I', modalidad: 'Presencial' },
           { nombre: 'Diagnóstico de los Trastornos Funcionales Oclusales', modalidad: 'No Presencial' },
@@ -149,7 +172,7 @@
         ]
       },
       {
-        ciclo: 'SEXTO CICLO',
+        ciclo: 'Sexto Ciclo',
         cursos: [
           { nombre: 'Clínica Integral para el Adulto II', modalidad: 'Presencial' },
           { nombre: 'Diagnóstico de los Trastornos Cráneo-Témporo-Mandibulares', modalidad: 'No Presencial' },
@@ -165,7 +188,7 @@
         ]
       },
       {
-        ciclo: 'SÉPTIMO CICLO',
+        ciclo: 'Séptimo Ciclo',
         cursos: [
           { nombre: 'Clínica Integral para el Adulto III', modalidad: 'Semipresencial' },
           { nombre: 'Rehabilitación Oral del Paciente Edéntulo Parcial', modalidad: 'No Presencial' },
@@ -179,7 +202,7 @@
         ]
       },
       {
-        ciclo: 'OCTAVO CICLO',
+        ciclo: 'Octavo Ciclo',
         cursos: [
           { nombre: 'Clínica Integral para el Adulto IV', modalidad: 'Presencial' },
           { nombre: 'Rehabilitación Oral del Paciente Edéntulo Total', modalidad: 'Semipresencial' },
@@ -194,14 +217,14 @@
         ]
       },
       {
-        ciclo: 'NOVENO CICLO',
+        ciclo: 'Noveno Ciclo',
         cursos: [
           { nombre: 'Internado Clínico de Servicios Estomatológicos para el Adulto', modalidad: 'Semipresencial' },
           { nombre: 'Internado Clínico de Servicios Estomatológicos para el Niño', modalidad: 'Presencial' }
         ]
       },
       {
-        ciclo: 'DÉCIMO CICLO',
+        ciclo: 'Décimo Ciclo',
         cursos: [
           { nombre: 'Internado Hospitalario y Externado', modalidad: 'Semipresencial' },
           { nombre: 'Internado en Salud Pública', modalidad: 'Semipresencial' }
@@ -222,6 +245,8 @@
 
         const grid = document.createElement('div');
         grid.className = 'grid';
+
+        let completados = 0;
 
         cursos.forEach(curso => {
           const div = document.createElement('div');
@@ -248,6 +273,7 @@
 
           if (aprobadas.has(curso.nombre)) {
             div.classList.add('approved');
+            completados++;
           }
 
           div.textContent = curso.nombre;
@@ -259,6 +285,13 @@
         });
 
         app.appendChild(grid);
+
+        if (completados === cursos.length) {
+          const mensaje = document.createElement('div');
+          mensaje.className = 'cycle-message';
+          mensaje.textContent = '¡Estoy tan orgulloso de ti!';
+          app.appendChild(mensaje);
+        }
       });
     }
 
@@ -266,3 +299,4 @@
   </script>
 </body>
 </html>
+
