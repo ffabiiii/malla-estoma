@@ -3,224 +3,251 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plan de Estudios - Princesa Doctora</title>
+  <title>Plan de Estudios - Estomatología</title>
   <style>
     body {
-      background-color: #fff0f5;
       font-family: 'Segoe UI', sans-serif;
-      color: #4b2e2e;
+      background-color: #fff0f5;
+      color: #333;
       padding: 20px;
     }
     .ciclo {
-      border: 2px solid #f4c2c2;
-      background-color: #ffe6f0;
-      border-radius: 12px;
+      background-color: #f9d5ec;
       padding: 15px;
       margin-bottom: 20px;
-      box-shadow: 2px 2px 10px rgba(255, 182, 193, 0.5);
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
-    .ciclo h2 {
-      margin-top: 0;
+    h2 {
       color: #d63384;
     }
-    .materia {
-      padding: 8px;
-      margin: 5px 0;
-      border: 1px solid #f8c6d8;
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+    li {
+      padding: 6px;
+      border: 1px solid #ffcce5;
       border-radius: 8px;
+      margin: 5px 0;
+      background-color: #ffe6f0;
       cursor: pointer;
-      background-color: #fff;
+      transition: 0.3s;
     }
-    .materia.aprobada {
-      background-color: #d4edda;
+    li.aprobada {
       text-decoration: line-through;
+      background-color: #d4edda;
+      color: #155724;
     }
-    .materia.bloqueada {
+    li.bloqueada {
       background-color: #f8d7da;
-      color: #a94442;
-      cursor: not-allowed;
+      color: #721c24;
+      pointer-events: none;
+      opacity: 0.6;
     }
-    .footer {
-      text-align: center;
+    footer {
       margin-top: 40px;
+      padding: 20px;
+      text-align: center;
       font-size: 1.2em;
-      font-weight: bold;
-      color: #c71585;
+      color: #fff;
+      background-color: #d63384;
+      border-radius: 15px;
     }
   </style>
 </head>
 <body>
-  <h1>Mi Princesa Doctora 👑</h1>
-  <p>Este es tu hermoso camino por la carrera de Estomatología 💖</p>
 
-  <div id="contenedor-ciclos"></div>
+  <h1 style="text-align:center;color:#d63384;">Plan de Estudios - Estomatología</h1>
 
-  <div class="footer">
-    Sigue con fuerza mi princesa Doctora. Con amor Fabricio 💌
-  </div>
+  <div id="plan"></div>
+
+  <footer>
+    Sigue con fuerza mi princesa Doctora. Con amor Fabricio 💖
+  </footer>
 
   <script>
-    const data = [
-      {
-        ciclo: "PRIMER CICLO",
-        cursos: [
-          { nombre: "Matemáticas Básicas", modalidad: "Presencial" },
-          { nombre: "Elementos de Química", modalidad: "Presencial" },
-          { nombre: "Introducción a la Estomatología", modalidad: "Presencial" },
-          { nombre: "Desarrollo Personal y Autonomía", modalidad: "Presencial" },
-          { nombre: "Comunicación y Redacción I", modalidad: "Presencial" },
-          { nombre: "Técnicas Básicas en Atención de Salud", modalidad: "Presencial" },
-          { nombre: "Filosofía y Ética", modalidad: "Presencial" },
-        ]
-      },
-      {
-        ciclo: "SEGUNDO CICLO",
-        cursos: [
-          { nombre: "Física Básica", modalidad: "Presencial" },
-          { nombre: "Fundamentos Básicos de la Práctica Estomatológica", modalidad: "Presencial", dependeDe: ["Introducción a la Estomatología"] },
-          { nombre: "Ciencias Sociales en el Contexto Actual", modalidad: "Presencial" },
-          { nombre: "Biología General", modalidad: "Presencial" },
-          { nombre: "Actividad Complementaria I", modalidad: "Presencial" },
-          { nombre: "Asignatura Electiva I", modalidad: "Presencial" },
-          { nombre: "Comunicación y Redacción II", modalidad: "Presencial", dependeDe: ["Comunicación y Redacción I"] },
-        ]
-      },
-      {
-        ciclo: "TERCER CICLO",
-        cursos: [
-          { nombre: "Bioquímica General y Oral", modalidad: "Semipresencial", dependeDe: ["Elementos de Química", "Biología General"] },
-          { nombre: "Morfología, Estructura y Función del Cuerpo Humano", modalidad: "Semipresencial" },
-          { nombre: "Morfología, Estructura y Función del Sistema Estomatognático I", modalidad: "Semipresencial" },
-          { nombre: "Morfología, Estructura y Función del Sistema Estomatognático II", modalidad: "Presencial", dependeDe: ["Morfología, Estructura y Función del Sistema Estomatognático I"] },
-          { nombre: "Inglés 1", modalidad: "Presencial" },
-          { nombre: "Actividad Complementaria II", modalidad: "Presencial" },
-          { nombre: "Asignatura Electiva II", modalidad: "Presencial" },
-        ]
-      },
-      {
-        ciclo: "CUARTO CICLO",
-        cursos: [
-          { nombre: "Microbiología y Parasitología", modalidad: "Presencial", dependeDe: ["Biología General"] },
-          { nombre: "Estomatología Preventiva y Social", modalidad: "Presencial" },
-          { nombre: "Psicología General", modalidad: "Presencial" },
-          { nombre: "Inmunología", modalidad: "Presencial", dependeDe: ["Bioquímica General y Oral"] },
-          { nombre: "Técnicas de Exploración Clínica", modalidad: "Presencial" },
-          { nombre: "Inglés II", modalidad: "Presencial", dependeDe: ["Inglés 1"] },
-        ]
-      },
-      {
-        ciclo: "QUINTO CICLO",
-        cursos: [
-          { nombre: "Farmacología Básica", modalidad: "Presencial", dependeDe: ["Bioquímica General y Oral"] },
-          { nombre: "Semiología Clínica Estomatológica", modalidad: "Presencial", dependeDe: ["Técnicas de Exploración Clínica"] },
-          { nombre: "Odontología Preventiva", modalidad: "Presencial", dependeDe: ["Estomatología Preventiva y Social"] },
-          { nombre: "Ética Profesional", modalidad: "Presencial" },
-          { nombre: "Fotografía Clínica", modalidad: "Presencial" },
-        ]
-      },
-      {
-        ciclo: "SEXTO CICLO",
-        cursos: [
-          { nombre: "Radiología Odontológica", modalidad: "Presencial" },
-          { nombre: "Anestesiología", modalidad: "Presencial", dependeDe: ["Farmacología Básica"] },
-          { nombre: "Operatoria Dental I", modalidad: "Presencial" },
-          { nombre: "Salud Pública y Epidemiología", modalidad: "Presencial" },
-          { nombre: "Emergencias Médicas", modalidad: "Presencial" },
-        ]
-      },
-      {
-        ciclo: "SÉPTIMO CICLO",
-        cursos: [
-          { nombre: "Periodoncia I", modalidad: "Presencial" },
-          { nombre: "Operatoria Dental II", modalidad: "Presencial", dependeDe: ["Operatoria Dental I"] },
-          { nombre: "Cirugía Bucal I", modalidad: "Presencial" },
-          { nombre: "Odontopediatría I", modalidad: "Presencial" },
-          { nombre: "Prótesis Parcial Removible I", modalidad: "Presencial" },
-        ]
-      },
-      {
-        ciclo: "OCTAVO CICLO",
-        cursos: [
-          { nombre: "Endodoncia", modalidad: "Presencial" },
-          { nombre: "Periodoncia II", modalidad: "Presencial", dependeDe: ["Periodoncia I"] },
-          { nombre: "Cirugía Bucal II", modalidad: "Presencial", dependeDe: ["Cirugía Bucal I"] },
-          { nombre: "Odontopediatría II", modalidad: "Presencial", dependeDe: ["Odontopediatría I"] },
-          { nombre: "Prótesis Parcial Removible II", modalidad: "Presencial", dependeDe: ["Prótesis Parcial Removible I"] },
-        ]
-      },
-      {
-        ciclo: "NOVENO CICLO",
-        cursos: [
-          { nombre: "Rehabilitación Oral", modalidad: "Presencial" },
-          { nombre: "Odontología Legal y Forense", modalidad: "Presencial" },
-          { nombre: "Gestión en Salud", modalidad: "Presencial" },
-          { nombre: "Internado Clínico I", modalidad: "Presencial" },
-        ]
-      },
-      {
-        ciclo: "DÉCIMO CICLO",
-        cursos: [
-          { nombre: "Internado Clínico II", modalidad: "Presencial", dependeDe: ["Internado Clínico I"] },
-          { nombre: "Tesis I", modalidad: "Presencial" },
-        ]
-      }
-    ];
+    const ciclos = {
+      "PRIMER CICLO": [
+        "Matemáticas Básicas",
+        "Elementos de Química",
+        "Introducción a la Estomatología",
+        "Desarrollo Personal y Autonomía",
+        "Comunicación y Redacción I",
+        "Técnicas Básicas en Atención de Salud",
+        "Filosofía y Ética"
+      ],
+      "SEGUNDO CICLO": [
+        "Física Básica",
+        "Fundamentos Básicos de la Práctica Estomatológica",
+        "Ciencias Sociales en el Contexto Actual",
+        "Biología General",
+        "Actividad Complementaria I",
+        "Asignatura Electiva I",
+        "Comunicación y Redacción II"
+      ],
+      "TERCER CICLO": [
+        "Bioquímica General y Oral",
+        "Morfología, Estructura y Función del Cuerpo Humano",
+        "Morfología, Estructura y Función del Sistema Estomatognático I",
+        "Morfología, Estructura y Función del Sistema Estomatognático II",
+        "Inglés 1",
+        "Actividad Complementaria II",
+        "Asignatura Electiva II"
+      ],
+      "CUARTO CICLO": [
+        "Microbiología General y Estomatológica",
+        "Farmacología Aplicada a la Estomatología",
+        "Semiología General y Bucal",
+        "Cirugía Bucal I",
+        "Principios de Imagenología en Estomatología",
+        "Odontología Social I",
+        "Diagnóstico de Enfermedades Bucales Prevalentes",
+        "Introducción a la Bioestadística",
+        "Inglés 2",
+        "Asignatura Electiva III",
+        "Actividad Complementaria III"
+      ],
+      "QUINTO CICLO": [
+        "Clínica Integral para el Adulto I",
+        "Diagnóstico de los Trastornos Funcionales Oclusales",
+        "Periodoncia I",
+        "Odontología Restauradora I",
+        "Endodoncia I",
+        "Clínica Integral Pediátrica I",
+        "Patología General y Bucal",
+        "Odontología Social II",
+        "Investigación en Estomatología I",
+        "Inglés 3",
+        "Actividad Complementaria IV"
+      ],
+      "SEXTO CICLO": [
+        "Clínica Integral para el Adulto II",
+        "Diagnóstico de los Trastornos Cráneo-Témporo-Mandibulares",
+        "Periodoncia II",
+        "Odontología Restauradora II",
+        "Clínica Integral Pediátrica II",
+        "Cirugía Bucal II",
+        "Medicina Bucal",
+        "Odontología Social III",
+        "Investigación en Estomatología II",
+        "Inglés 4",
+        "Asignatura Electiva IV"
+      ],
+      "SÉPTIMO CICLO": [
+        "Clínica Integral para el Adulto III",
+        "Rehabilitación Oral del Paciente Edéntulo Parcial",
+        "Periodoncia III",
+        "Endodoncia II",
+        "Clínica Integral Pediátrica III",
+        "Emprendimiento y Negocios en Odontología",
+        "Cirugía Bucal III",
+        "Odontología Social IV",
+        "Investigación en Estomatología III"
+      ],
+      "OCTAVO CICLO": [
+        "Clínica Integral para el Adulto IV",
+        "Rehabilitación Oral del Paciente Edéntulo Total",
+        "Periodoncia IV",
+        "Endodoncia III",
+        "Clínica Integral Pediátrica IV",
+        "Infectología Estomatológica",
+        "Odontología Social V",
+        "Gestión y Marketing en Odontología",
+        "Investigación en Estomatología IV",
+        "Asignatura Electiva V"
+      ],
+      "NOVENO CICLO": [
+        "Internado Clínico de Servicios Estomatológicos para el Adulto",
+        "Internado Clínico de Servicios Estomatológicos para el Niño"
+      ],
+      "DÉCIMO CICLO": [
+        "Internado Hospitalario y Externado",
+        "Internado en Salud Pública"
+      ]
+    };
 
-    const contenedor = document.getElementById('contenedor-ciclos');
-    const estadoCursos = {};
+    const requisitos = {
+      "DÉCIMO CICLO": ["NOVENO CICLO"],
+      "NOVENO CICLO": ["OCTAVO CICLO"],
+      "OCTAVO CICLO": ["SÉPTIMO CICLO"],
+      "SÉPTIMO CICLO": ["SEXTO CICLO"],
+      "SEXTO CICLO": ["QUINTO CICLO"],
+      "QUINTO CICLO": ["CUARTO CICLO"]
+    };
 
-    function puedeAprobar(materia) {
-      if (!materia.dependeDe) return true;
-      return materia.dependeDe.every(dep => estadoCursos[dep]);
+    const container = document.getElementById("plan");
+    const aprobadas = new Set();
+
+    for (const [ciclo, cursos] of Object.entries(ciclos)) {
+      const div = document.createElement("div");
+      div.className = "ciclo";
+      const h2 = document.createElement("h2");
+      h2.textContent = ciclo;
+      const ul = document.createElement("ul");
+      const liElements = [];
+
+      cursos.forEach(curso => {
+        const li = document.createElement("li");
+        li.textContent = curso;
+        li.classList.add("bloqueada");
+        li.addEventListener("click", () => {
+          if (!li.classList.contains("bloqueada")) {
+            li.classList.toggle("aprobada");
+            if (li.classList.contains("aprobada")) {
+              aprobadas.add(curso);
+            } else {
+              aprobadas.delete(curso);
+            }
+            checkUnlock();
+          }
+        });
+        liElements.push(li);
+        ul.appendChild(li);
+      });
+
+      div.appendChild(h2);
+      div.appendChild(ul);
+      container.appendChild(div);
+
+      const mensaje = document.createElement("div");
+      mensaje.style.marginTop = "10px";
+      mensaje.style.fontWeight = "bold";
+      mensaje.style.color = "#d63384";
+      mensaje.textContent = "¡Estoy tan orgulloso de ti!";
+      div.appendChild(mensaje);
     }
 
-    function render() {
-      contenedor.innerHTML = '';
-      data.forEach(ciclo => {
-        const div = document.createElement('div');
-        div.className = 'ciclo';
-        div.innerHTML = `<h2>${ciclo.ciclo}</h2>`;
+    function checkUnlock() {
+      document.querySelectorAll(".ciclo").forEach(cicloDiv => {
+        const ciclo = cicloDiv.querySelector("h2").textContent;
+        const liList = cicloDiv.querySelectorAll("li");
+        const dependencias = requisitos[ciclo];
+        let desbloquear = true;
 
-        ciclo.cursos.forEach(curso => {
-          const materiaDiv = document.createElement('div');
-          materiaDiv.className = 'materia';
-          materiaDiv.textContent = `- ${curso.nombre} | ${curso.modalidad}`;
-
-          if (!estadoCursos[curso.nombre]) {
-            estadoCursos[curso.nombre] = false;
+        if (dependencias) {
+          for (const dep of dependencias) {
+            if (!ciclos[dep].every(c => aprobadas.has(c))) {
+              desbloquear = false;
+              break;
+            }
           }
+        }
 
-          if (!puedeAprobar(curso) && !estadoCursos[curso.nombre]) {
-            materiaDiv.classList.add('bloqueada');
+        liList.forEach(li => {
+          if (desbloquear || !requisitos[ciclo]) {
+            li.classList.remove("bloqueada");
+          } else {
+            li.classList.add("bloqueada");
           }
-
-          if (estadoCursos[curso.nombre]) {
-            materiaDiv.classList.add('aprobada');
-          }
-
-          materiaDiv.addEventListener('click', () => {
-            if (!puedeAprobar(curso)) return;
-            estadoCursos[curso.nombre] = !estadoCursos[curso.nombre];
-            render();
-          });
-
-          div.appendChild(materiaDiv);
         });
-
-        const mensaje = document.createElement('p');
-        mensaje.textContent = '¡Estoy tan orgulloso de ti!';
-        mensaje.style.color = '#d63384';
-        mensaje.style.fontWeight = 'bold';
-        mensaje.style.marginTop = '10px';
-        div.appendChild(mensaje);
-
-        contenedor.appendChild(div);
       });
     }
 
-    render();
+    checkUnlock();
   </script>
 </body>
 </html>
+>
 
 
