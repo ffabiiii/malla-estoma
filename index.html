@@ -1,302 +1,231 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Malla Curricular de Estomatología</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trayectoria de mi Princesa</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f7f9fb;
-      margin: 0;
-      padding: 20px;
+      font-family: 'Arial', sans-serif;
+      background-color: #fff0f5;
+      color: #4b2c2c;
+      padding: 30px;
     }
+
     h1 {
-      color: #d81b60;
       text-align: center;
+      color: #d16ba5;
     }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      gap: 16px;
-      margin-bottom: 30px;
+
+    .ciclo {
+      background-color: #ffdce5;
+      border-radius: 15px;
+      padding: 20px;
+      margin: 25px 0;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
-    .cycle-title {
-      grid-column: span 10;
-      background-color: #f48fb1;
-      color: white;
-      font-size: 1.2em;
-      padding: 10px;
-      border-radius: 6px;
+
+    .ciclo h2 {
+      color: #c94f7c;
     }
-    .subject {
-      background-color: white;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      padding: 10px;
-      box-shadow: 1px 2px 5px rgba(0,0,0,0.05);
-      cursor: pointer;
-      position: relative;
+
+    .ciclo ul {
+      list-style-type: none;
+      padding-left: 0;
     }
-    .subject.approved {
-      background-color: #f8bbd0;
-    }
-    .subject.locked {
-      background-color: #f2f2f2;
-      cursor: not-allowed;
-      opacity: 0.6;
-    }
-    .subject span {
-      display: block;
-      font-size: 0.9em;
-      color: #555;
-      margin-top: 4px;
-    }
-    .tooltip {
-      position: absolute;
-      top: -5px;
-      left: 105%;
-      background: #333;
-      color: white;
+
+    .ciclo ul li {
+      margin: 5px 0;
       padding: 6px;
-      border-radius: 4px;
-      font-size: 0.8em;
-      display: none;
-      z-index: 10;
-    }
-    .subject.locked:hover .tooltip {
-      display: block;
-    }
-    .cycle-message {
-      grid-column: span 10;
-      color: #e91e63;
-      font-weight: bold;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    button {
-      background-color: #f48fb1;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1em;
-    }
-    button:hover {
-      background-color: #ec407a;
-    }
-    footer {
-      text-align: center;
-      font-weight: bold;
-      margin-top: 20px;
-      background-color: #f8bbd0;
-      color: #880e4f;
-      padding: 10px;
+      background-color: #ffe6ee;
       border-radius: 8px;
+    }
+
+    .mensaje {
+      background-color: #ffe0f0;
+      color: #c2185b;
+      padding: 10px;
+      text-align: center;
+      margin-top: 10px;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 1.1em;
+      color: #b0004d;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <h1>Malla Curricular - Estomatología</h1>
-  <div id="app"></div>
-  <footer>Sigue con fuerza mi princesa Doctora. Con amor Fabricio</footer>
 
-  <script>
-    const data = [
-      {
-        ciclo: 'Primer Ciclo',
-        cursos: [
-          { nombre: 'Matemáticas Básicas', modalidad: 'Presencial' },
-          { nombre: 'Elementos de Química', modalidad: 'Presencial' },
-          { nombre: 'Introducción a la Estomatología', modalidad: 'Presencial' },
-          { nombre: 'Desarrollo Personal y Autonomía', modalidad: 'Presencial' },
-          { nombre: 'Comunicación y Redacción I', modalidad: 'Presencial' },
-          { nombre: 'Técnicas Básicas en Atención de Salud', modalidad: 'Presencial' },
-          { nombre: 'Filosofía y Ética', modalidad: 'Presencial' }
-        ]
-      },
-      {
-        ciclo: 'Segundo Ciclo',
-        cursos: [
-          { nombre: 'Física Básica', modalidad: 'Presencial' },
-          { nombre: 'Fundamentos Básicos de la Práctica Estomatológica', modalidad: 'Presencial' },
-          { nombre: 'Ciencias Sociales en el Contexto Actual', modalidad: 'Presencial' },
-          { nombre: 'Biología General', modalidad: 'Presencial' },
-          { nombre: 'Actividad Complementaria I', modalidad: 'Presencial' },
-          { nombre: 'Asignatura Electiva I', modalidad: 'Presencial' },
-          { nombre: 'Comunicación y Redacción II', modalidad: 'Presencial' }
-        ]
-      },
-      {
-        ciclo: 'Tercer Ciclo',
-        cursos: [
-          { nombre: 'Bioquímica General y Oral', modalidad: 'Semipresencial' },
-          { nombre: 'Morfología, Estructura y Función del Cuerpo Humano', modalidad: 'Semipresencial' },
-          { nombre: 'Morfología, Estructura y Función del Sistema Estomatognático I', modalidad: 'Semipresencial' },
-          { nombre: 'Morfología, Estructura y Función del Sistema Estomatognático II', modalidad: 'Presencial' },
-          { nombre: 'Inglés 1', modalidad: 'Presencial' },
-          { nombre: 'Actividad Complementaria II', modalidad: 'Presencial' },
-          { nombre: 'Asignatura Electiva II', modalidad: 'Presencial' }
-        ]
-      },
-      {
-        ciclo: 'Cuarto Ciclo',
-        cursos: [
-          { nombre: 'Microbiología General y Estomatológica', modalidad: 'Semipresencial' },
-          { nombre: 'Farmacología Aplicada a la Estomatología', modalidad: 'Semipresencial' },
-          { nombre: 'Semiología General y Bucal', modalidad: 'Semipresencial' },
-          { nombre: 'Cirugía Bucal I', modalidad: 'Semipresencial' },
-          { nombre: 'Principios de Imagenología en Estomatología', modalidad: 'Semipresencial' },
-          { nombre: 'Odontología Social I', modalidad: 'Semipresencial' },
-          { nombre: 'Diagnóstico de Enfermedades Bucales Prevalentes', modalidad: 'Semipresencial' },
-          { nombre: 'Introducción a la Bioestadística', modalidad: 'No Presencial' },
-          { nombre: 'Inglés 2', modalidad: 'Presencial' },
-          { nombre: 'Asignatura Electiva III', modalidad: 'Presencial' },
-          { nombre: 'Actividad Complementaria III', modalidad: 'Presencial' }
-        ]
-      },
-      {
-        ciclo: 'Quinto Ciclo',
-        cursos: [
-          { nombre: 'Clínica Integral para el Adulto I', modalidad: 'Presencial' },
-          { nombre: 'Diagnóstico de los Trastornos Funcionales Oclusales', modalidad: 'No Presencial' },
-          { nombre: 'Periodoncia I', modalidad: 'No Presencial' },
-          { nombre: 'Odontología Restauradora I', modalidad: 'No Presencial' },
-          { nombre: 'Endodoncia I', modalidad: 'Presencial' },
-          { nombre: 'Clínica Integral Pediátrica I', modalidad: 'Presencial' },
-          { nombre: 'Patología General y Bucal', modalidad: 'Semipresencial' },
-          { nombre: 'Odontología Social II', modalidad: 'Presencial' },
-          { nombre: 'Investigación en Estomatología I', modalidad: 'No Presencial' },
-          { nombre: 'Inglés 3', modalidad: 'Presencial' },
-          { nombre: 'Actividad Complementaria IV', modalidad: 'Presencial' }
-        ]
-      },
-      {
-        ciclo: 'Sexto Ciclo',
-        cursos: [
-          { nombre: 'Clínica Integral para el Adulto II', modalidad: 'Presencial' },
-          { nombre: 'Diagnóstico de los Trastornos Cráneo-Témporo-Mandibulares', modalidad: 'No Presencial' },
-          { nombre: 'Periodoncia II', modalidad: 'No Presencial' },
-          { nombre: 'Odontología Restauradora II', modalidad: 'Presencial' },
-          { nombre: 'Clínica Integral Pediátrica II', modalidad: 'Presencial' },
-          { nombre: 'Cirugía Bucal II', modalidad: 'Presencial' },
-          { nombre: 'Medicina Bucal', modalidad: 'Semipresencial' },
-          { nombre: 'Odontología Social III', modalidad: 'Presencial' },
-          { nombre: 'Investigación en Estomatología II', modalidad: 'No Presencial' },
-          { nombre: 'Inglés 4', modalidad: 'Presencial' },
-          { nombre: 'Asignatura Electiva IV', modalidad: 'Presencial' }
-        ]
-      },
-      {
-        ciclo: 'Séptimo Ciclo',
-        cursos: [
-          { nombre: 'Clínica Integral para el Adulto III', modalidad: 'Semipresencial' },
-          { nombre: 'Rehabilitación Oral del Paciente Edéntulo Parcial', modalidad: 'No Presencial' },
-          { nombre: 'Periodoncia III', modalidad: 'No Presencial' },
-          { nombre: 'Endodoncia II', modalidad: 'No Presencial' },
-          { nombre: 'Clínica Integral Pediátrica III', modalidad: 'Semipresencial' },
-          { nombre: 'Emprendimiento y Negocios en Odontología', modalidad: 'Presencial' },
-          { nombre: 'Cirugía Bucal III', modalidad: 'Semipresencial' },
-          { nombre: 'Odontología Social IV', modalidad: 'Presencial' },
-          { nombre: 'Investigación en Estomatología III', modalidad: 'No Presencial' }
-        ]
-      },
-      {
-        ciclo: 'Octavo Ciclo',
-        cursos: [
-          { nombre: 'Clínica Integral para el Adulto IV', modalidad: 'Presencial' },
-          { nombre: 'Rehabilitación Oral del Paciente Edéntulo Total', modalidad: 'Semipresencial' },
-          { nombre: 'Periodoncia IV', modalidad: 'No Presencial' },
-          { nombre: 'Endodoncia III', modalidad: 'Presencial' },
-          { nombre: 'Clínica Integral Pediátrica IV', modalidad: 'Semipresencial' },
-          { nombre: 'Infectología Estomatológica', modalidad: 'No Presencial' },
-          { nombre: 'Odontología Social V', modalidad: 'Presencial' },
-          { nombre: 'Gestión y Marketing en Odontología', modalidad: 'No Presencial' },
-          { nombre: 'Investigación en Estomatología IV', modalidad: 'No Presencial' },
-          { nombre: 'Asignatura Electiva V', modalidad: 'Presencial' }
-        ]
-      },
-      {
-        ciclo: 'Noveno Ciclo',
-        cursos: [
-          { nombre: 'Internado Clínico de Servicios Estomatológicos para el Adulto', modalidad: 'Semipresencial' },
-          { nombre: 'Internado Clínico de Servicios Estomatológicos para el Niño', modalidad: 'Presencial' }
-        ]
-      },
-      {
-        ciclo: 'Décimo Ciclo',
-        cursos: [
-          { nombre: 'Internado Hospitalario y Externado', modalidad: 'Semipresencial' },
-          { nombre: 'Internado en Salud Pública', modalidad: 'Semipresencial' }
-        ]
-      }
-    ];
+  <h1>Tu Camino en la Estomatología</h1>
 
-    const app = document.getElementById('app');
-    const aprobadas = new Set();
+  <!-- PRIMER CICLO -->
+  <div class="ciclo">
+    <h2>PRIMER CICLO</h2>
+    <ul>
+      <li>Matemáticas Básicas | Presencial</li>
+      <li>Elementos de Química | Presencial</li>
+      <li>Introducción a la Estomatología | Presencial</li>
+      <li>Desarrollo Personal y Autonomía | Presencial</li>
+      <li>Comunicación y Redacción I | Presencial</li>
+      <li>Técnicas Básicas en Atención de Salud | Presencial</li>
+      <li>Filosofía y Ética | Presencial</li>
+    </ul>
+    <div class="mensaje">¡Estoy tan orgulloso de ti!</div>
+  </div>
 
-    function render() {
-      app.innerHTML = '';
-      data.forEach(({ ciclo, cursos }) => {
-        const title = document.createElement('div');
-        title.className = 'cycle-title';
-        title.textContent = ciclo;
-        app.appendChild(title);
+  <!-- SEGUNDO CICLO -->
+  <div class="ciclo">
+    <h2>SEGUNDO CICLO</h2>
+    <ul>
+      <li>Física Básica | Presencial</li>
+      <li>Fundamentos Básicos de la Práctica Estomatológica | Presencial</li>
+      <li>Ciencias Sociales en el Contexto Actual | Presencial</li>
+      <li>Biología General | Presencial</li>
+      <li>Actividad Complementaria I | Presencial</li>
+      <li>Asignatura Electiva I | Presencial</li>
+      <li>Comunicación y Redacción II | Presencial</li>
+    </ul>
+    <div class="mensaje">¡Estoy tan orgulloso de ti!</div>
+  </div>
 
-        const grid = document.createElement('div');
-        grid.className = 'grid';
+  <!-- TERCER CICLO -->
+  <div class="ciclo">
+    <h2>TERCER CICLO</h2>
+    <ul>
+      <li>Bioquímica General y Oral | Semipresencial</li>
+      <li>Morfología, Estructura y Función del Cuerpo Humano | Semipresencial</li>
+      <li>Morfología, Estructura y Función del Sistema Estomatognático I | Semipresencial</li>
+      <li>Morfología, Estructura y Función del Sistema Estomatognático II | Presencial</li>
+      <li>Inglés 1 | Presencial</li>
+      <li>Actividad Complementaria II | Presencial</li>
+      <li>Asignatura Electiva II | Presencial</li>
+    </ul>
+    <div class="mensaje">¡Estoy tan orgulloso de ti!</div>
+  </div>
 
-        let completados = 0;
+  <!-- CUARTO CICLO -->
+  <div class="ciclo">
+    <h2>CUARTO CICLO</h2>
+    <ul>
+      <li>Microbiología General y Estomatológica | Semipresencial</li>
+      <li>Farmacología Aplicada a la Estomatología | Semipresencial</li>
+      <li>Semiología General y Bucal | Semipresencial</li>
+      <li>Cirugía Bucal I | Semipresencial</li>
+      <li>Principios de Imagenología en Estomatología | Semipresencial</li>
+      <li>Odontología Social I | Semipresencial</li>
+      <li>Diagnóstico de Enfermedades Bucales Prevalentes | Semipresencial</li>
+      <li>Introducción a la Bioestadística | No Presencial</li>
+      <li>Inglés 2 | Presencial</li>
+      <li>Asignatura Electiva III | Presencial</li>
+      <li>Actividad Complementaria III | Presencial</li>
+    </ul>
+    <div class="mensaje">¡Estoy tan orgulloso de ti!</div>
+  </div>
 
-        cursos.forEach(curso => {
-          const div = document.createElement('div');
-          div.className = 'subject';
-          const requisitos = curso.prerequisitos || [];
-          const bloqueado = requisitos.some(r => !aprobadas.has(r));
+  <!-- QUINTO CICLO -->
+  <div class="ciclo">
+    <h2>QUINTO CICLO</h2>
+    <ul>
+      <li>Clínica Integral para el Adulto I | Presencial</li>
+      <li>Diagnóstico de los Trastornos Funcionales Oclusales | No Presencial</li>
+      <li>Periodoncia I | No Presencial</li>
+      <li>Odontología Restauradora I | No Presencial</li>
+      <li>Endodoncia I | Presencial</li>
+      <li>Clínica Integral Pediátrica I | Presencial</li>
+      <li>Patología General y Bucal | Semipresencial</li>
+      <li>Odontología Social II | Presencial</li>
+      <li>Investigación en Estomatología I | No Presencial</li>
+      <li>Inglés 3 | Presencial</li>
+      <li>Actividad Complementaria IV | Presencial</li>
+    </ul>
+    <div class="mensaje">¡Estoy tan orgulloso de ti!</div>
+  </div>
 
-          if (bloqueado) {
-            div.classList.add('locked');
-            const tooltip = document.createElement('div');
-            tooltip.className = 'tooltip';
-            tooltip.textContent = 'Requiere: ' + requisitos.join(', ');
-            div.appendChild(tooltip);
-          } else {
-            div.onclick = () => {
-              if (aprobadas.has(curso.nombre)) {
-                aprobadas.delete(curso.nombre);
-              } else {
-                aprobadas.add(curso.nombre);
-              }
-              render();
-            };
-          }
+  <!-- SEXTO CICLO -->
+  <div class="ciclo">
+    <h2>SEXTO CICLO</h2>
+    <ul>
+      <li>Clínica Integral para el Adulto II | Presencial</li>
+      <li>Diagnóstico de los Trastornos Cráneo-Témporo-Mandibulares | No Presencial</li>
+      <li>Periodoncia II | No Presencial</li>
+      <li>Odontología Restauradora II | Presencial</li>
+      <li>Clínica Integral Pediátrica II | Presencial</li>
+      <li>Cirugía Bucal II | Presencial</li>
+      <li>Medicina Bucal | Semipresencial</li>
+      <li>Odontología Social III | Presencial</li>
+      <li>Investigación en Estomatología II | No Presencial</li>
+      <li>Inglés 4 | Presencial</li>
+      <li>Asignatura Electiva IV | Presencial</li>
+    </ul>
+    <div class="mensaje">¡Estoy tan orgulloso de ti!</div>
+  </div>
 
-          if (aprobadas.has(curso.nombre)) {
-            div.classList.add('approved');
-            completados++;
-          }
+  <!-- SÉPTIMO CICLO -->
+  <div class="ciclo">
+    <h2>SÉPTIMO CICLO</h2>
+    <ul>
+      <li>Clínica Integral para el Adulto III | Semipresencial</li>
+      <li>Rehabilitación Oral del Paciente Edéntulo Parcial | No Presencial</li>
+      <li>Periodoncia III | No Presencial</li>
+      <li>Endodoncia II | No Presencial</li>
+      <li>Clínica Integral Pediátrica III | Semipresencial</li>
+      <li>Emprendimiento y Negocios en Odontología | Presencial</li>
+      <li>Cirugía Bucal III | Semipresencial</li>
+      <li>Odontología Social IV | Presencial</li>
+      <li>Investigación en Estomatología III | No Presencial</li>
+    </ul>
+    <div class="mensaje">¡Estoy tan orgulloso de ti!</div>
+  </div>
 
-          div.textContent = curso.nombre;
-          const span = document.createElement('span');
-          span.textContent = curso.modalidad;
-          div.appendChild(span);
+  <!-- OCTAVO CICLO -->
+  <div class="ciclo">
+    <h2>OCTAVO CICLO</h2>
+    <ul>
+      <li>Clínica Integral para el Adulto IV | Presencial</li>
+      <li>Rehabilitación Oral del Paciente Edéntulo Total | Semipresencial</li>
+      <li>Periodoncia IV | No Presencial</li>
+      <li>Endodoncia III | Presencial</li>
+      <li>Clínica Integral Pediátrica IV | Semipresencial</li>
+      <li>Infectología Estomatológica | No Presencial</li>
+      <li>Odontología Social V | Presencial</li>
+      <li>Gestión y Marketing en Odontología | No Presencial</li>
+      <li>Investigación en Estomatología IV | No Presencial</li>
+      <li>Asignatura Electiva V | Presencial</li>
+    </ul>
+    <div class="mensaje">¡Estoy tan orgulloso de ti!</div>
+  </div>
 
-          grid.appendChild(div);
-        });
+  <!-- NOVENO CICLO -->
+  <div class="ciclo">
+    <h2>NOVENO CICLO</h2>
+    <ul>
+      <li>Internado Clínico de Servicios Estomatológicos para el Adulto | Semipresencial</li>
+      <li>Internado Clínico de Servicios Estomatológicos para el Niño | Presencial</li>
+    </ul>
+    <div class="mensaje">¡Estoy tan orgulloso de ti!</div>
+  </div>
 
-        app.appendChild(grid);
+  <!-- DÉCIMO CICLO -->
+  <div class="ciclo">
+    <h2>DÉCIMO CICLO</h2>
+    <ul>
+      <li>Internado Hospitalario y Externado | Semipresencial</li>
+      <li>Internado en Salud Pública | Semipresencial</li>
+    </ul>
+    <div class="mensaje">¡Estoy tan orgulloso de ti!</div>
+  </div>
 
-        if (completados === cursos.length) {
-          const mensaje = document.createElement('div');
-          mensaje.className = 'cycle-message';
-          mensaje.textContent = '¡Estoy tan orgulloso de ti!';
-          app.appendChild(mensaje);
-        }
-      });
-    }
-
-    render();
-  </script>
+  <!-- FOOTER -->
+  <footer>
+    Sigue con fuerza mi princesa Doctora. Con amor Fabricio
+  </footer>
 </body>
 </html>
+
 
